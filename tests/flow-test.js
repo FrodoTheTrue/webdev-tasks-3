@@ -8,6 +8,7 @@ var fs = require('fs');
 var directory = './cats';
 
 var fun1 = function(next) {
+    setTimeout('second', 100);
     next(null, 'result1');
 };
 var funParallel = function(next) {
@@ -34,7 +35,7 @@ describe('flow.serial', function () {
         it('should be called once', function() {
             var spy = sinon.spy();
             flow.serial([fun1, fun2], spy);
-            expect(spy.calledOnce).to.be.true;
+            spy.should.have.been.calledOnce;
         });
 
         it('should take 2 arguments', function() {
@@ -68,7 +69,7 @@ describe('flow.parallel', function () {
     describe('result callback', function() {
         it('should be called once', function() {
             var spy = sinon.spy(function(err, data) {
-                expect(spy.calledOnce).to.be.true;
+                spy.should.have.been.calledOnce;
             });
             flow.parallel([fun1, funParallel], spy);
         });
@@ -94,7 +95,7 @@ describe('flow.map', function () {
     describe('result callback', function() {
         it('should be called once', function() {
             var spy = sinon.spy(function(err, data) {
-                expect(spy.calledOnce).to.be.true;
+                spy.should.have.been.calledOnce;
             });
             flow.map([2, 4], mapFunction, spy);
         });
